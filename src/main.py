@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 import os
+import json
 # import uvicorn
 
 from src.api.errors import ErrorResponse
@@ -36,8 +37,8 @@ async def http_exception_handler(request, exc):
         return JSONResponse({ "message": "ERROR" }, status_code=exc.status_code)
     
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request, exc):
-    return JSONResponse({ "code": 422, "message": "Invalid request", "detail": exc.detail }, status_code=422)
+async def validation_exception_handler(request, exc: RequestValidationError):
+    return JSONResponse({ "code": 422, "message": "Invalid request", "detail": json.loads(exc.json()) }, status_code=422)
 
 v1 = APIRouter(
     prefix="/api/v1",

@@ -16,7 +16,7 @@ class Service(BaseModel):
     title: str
     description: str
     category: str
-    image: str
+    image: str = ""
     # start time of the first session in a day in local time (e.g. 9)
     timezone: str
     start_time: int = Field(ge=0, le=23)
@@ -42,8 +42,8 @@ class UserService(BaseModel):
     User to Service relation \n
     That is, each record represents a user's 
     """
-    id: str
+    id: str = ""
     user_id: str
     service_id: str
-    created_at: int
-    updated_at: int
+    created_at: int = 0
+    updated_at: int = 0

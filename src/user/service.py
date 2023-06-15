@@ -75,6 +75,16 @@ def get_user_by_email(email: str) -> Optional[User]:
         return None
     return _user_from_row(user)
 
+def get_user_by_id_and_organization(id: str, organization_id: str) -> Optional[User]:
+    q = f"""SELECT {_sql_user_columns()} FROM users WHERE id = '{id}' AND organization_id = '{organization_id}';"""
+    cur = DB.cursor()
+    cur.execute(q)
+    user = cur.fetchone()
+    cur.close()
+    if user is None:
+        return None
+    return _user_from_row(user)
+
 def insert_user(user: User) -> None:
     now = int(datetime.utcnow().timestamp() * 1000)
     user.created_at = now
